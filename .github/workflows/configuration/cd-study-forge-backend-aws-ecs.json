@@ -1,0 +1,58 @@
+{
+    "family": "study-forge-backend",
+    "containerDefinitions": [
+        {
+            "name": "study-forge-backend",
+            "image": "012345678901.dkr.ecr.eu-west-1.amazonaws.com/repository-name:latest",
+            "essential": true,
+            "portMappings": [
+                {
+                    "name": "study-forge-backend-3000-tcp",
+                    "containerPort": 3000,
+                    "hostPort": 3000,
+                    "protocol": "tcp"
+                }
+            ],
+            "secrets": [
+                {
+                    "name": "BCRYPT_SALT",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-1:012345678901:secret:secret-name:BCRYPT_SALT::"
+                },
+                {
+                    "name": "JWT_EXPIRATION",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-1:012345678901:secret:secret-name:JWT_EXPIRATION::"
+                },
+                {
+                    "name": "JWT_SECRET_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-1:012345678901:secret:secret-name:JWT_SECRET_KEY::"
+                },
+                {
+                    "name": "DB_URL",
+                    "valueFrom": "arn:aws:secretsmanager:eu-west-1:012345678901:secret:secret-name:DB_URL::"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/study-forge-backend",
+                    "awslogs-region": "eu-west-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "mountPoints": [],
+            "volumesFrom": []
+        }
+    ],
+    "executionRoleArn": "arn:aws:iam::012345678901:role/task-execution-role-name",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "2048",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    }
+}
